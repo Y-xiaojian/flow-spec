@@ -1,0 +1,36 @@
+{
+  "name": "create-flow-spec",
+  "version": "0.1.0",
+  "description": "Scaffold the Flow-Spec document delivery skill pack into a project (skills, references, workflows, Cursor rules).",
+  "type": "module",
+  "bin": {
+    "create-flow-spec": "./bin/create-flow-spec.mjs"
+  },
+  "files": [
+    "bin",
+    "skills",
+    "references",
+    "workflows",
+    "commands",
+    "scripts",
+    ".cursor",
+    "README.md",
+    "CLAUDE.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "flow-spec",
+    "cursor",
+    "prd",
+    "documentation",
+    "skills",
+    "scaffold"
+  ],
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": ""
+  }
+}
