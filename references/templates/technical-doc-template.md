@@ -34,4 +34,4 @@
 
 ## 输出路径
 
-`temp/technical/<业务ID>_technical_v<版本>_<YYYYMMDD>.md`
+`changes/<CHANGE-ID>/technical/<业务ID>_technical_v<版本>_<YYYYMMDD>.md`

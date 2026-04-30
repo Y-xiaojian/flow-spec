@@ -10,4 +10,4 @@
 
 输出路径：
 
-- `temp/requirements/`
+- `changes/<CHANGE-ID>/requirements/`

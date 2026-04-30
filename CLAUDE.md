@@ -40,22 +40,11 @@ Flow-Spec 是一套**与业务领域解耦的文档交付工作流**技能包：
 
 ## 产出约定
 
-**默认输出根目录**：`flow-spec/temp/`
-
-| 子目录 | 用途 |
-|--------|------|
-| `temp/requirements/` | PRD、功能点清单 |
-| `temp/technical/` | 技术说明类文档 |
-| `temp/brainstorm/` | 设计头脑风暴 |
-| `temp/tasks/` | 任务清单 |
-| `temp/prototypes/` | 原型规格 |
-| `temp/diagrams/` | draw.io 流程图、泳道图 |
-| `temp/commercial/` | 商务类文档预留（技能就绪后使用） |
-| `temp/logs/` | 会话日志 |
+**产出目录**以 **`references/rules/storage.md`** 为准：npm 为 **`flowspec/`**，嵌入为 **`<嵌入根>/temp/`**；其下 **`specs/<小类>/`**（基线）、**`changes/<CHANGE-ID>/<小类>/`**（进行中）、**`logs/`** 会话日志；**CHANGE-ID** 见 **`.active-change`**。
 
 **命名格式**：`<业务ID>_<文档类型>_v<版本>_<YYYYMMDD>.md`
 
-**会话日志格式**：`temp/logs/session-YYYYMMDD.md`，每行：`<时间> <触发词> | <路线> | <模板> | <输出路径> | <校验结果>`
+**会话日志格式**：`{产出根}/logs/session-YYYYMMDD.md`，每行可含：`<时间> <触发词> | <路线> | <模板> | <CHANGE-ID> | <输出路径> | <校验结果>`
 
 ## 核心约束
 

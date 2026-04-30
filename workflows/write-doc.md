@@ -1,6 +1,7 @@
 # Write-Doc 工作流（文档写作路线）
 
-CLI 入口：`write-doc`
+CLI 入口：`write-doc`  
+**路径：** 下表 **`changes/<CHANGE-ID>/…`** 相对 **`{产出根}`**；**CHANGE-ID** 见 **`.active-change`**（见 **`references/rules/storage.md`**）。
 
 ## 状态机路线
 
@@ -10,23 +11,23 @@ CLI 入口：`write-doc`
   
 [Stage 1] requirement-brainstorming
   目标：多轮对话，收敛需求结论
-  产物：temp/brainstorm/<需求名>.md
+  产物：changes/<CHANGE-ID>/brainstorm/<需求名>.md
   ⛔ CHECKPOINT A：结论完整，用户输入「结论确认」
   
 [Stage 2] prototype-design
   目标：基于结论生成静态 HTML 原型
-  产物：temp/prototypes/<需求名>/index.html
-        temp/prototypes/<需求名>/annotations.md
+  产物：changes/<CHANGE-ID>/prototypes/<需求名>/index.html
+        changes/<CHANGE-ID>/prototypes/<需求名>/annotations.md
   ⛔ CHECKPOINT B：用户在浏览器确认样式，输入「原型确认」
   
 [Stage 3] feature-list
   目标：从原型提取结构化功能点清单
-  产物：temp/requirements/<需求名>-feature-list.csv（主）与 -feature-list.md（说明）
+  产物：changes/<CHANGE-ID>/requirements/<需求名>-feature-list.csv（主）与 -feature-list.md（说明）
   ⛔ CHECKPOINT C：用户确认功能点无遗漏，输入「功能点确认」
   
 [Stage 4] requirement-doc-writing（+ 按需 swimlane-diagram）
   目标：生成完整 PRD，归档
-  产物：temp/requirements/<需求名>-prd.md；第二章泳道图为 temp/diagrams/<需求名>-process.drawio（按 `swimlane-diagram` 技能）
+  产物：changes/<CHANGE-ID>/requirements/<需求名>-prd.md；第二章泳道图为 changes/<CHANGE-ID>/diagrams/<需求名>-process.drawio（按 `swimlane-diagram` 技能）
   ⛔ CHECKPOINT D：用户最终确认，文档归档完成
   
 [完成]
@@ -36,10 +37,10 @@ CLI 入口：`write-doc`
 
 | 阶段  | 技能                                                                       | 输入            | 输出                                                            |
 | --- | ------------------------------------------------------------------------ | ------------- | ------------------------------------------------------------- |
-| 1   | `requirement-brainstorming`                                              | 用户描述          | `temp/brainstorm/`                                            |
-| 2   | `prototype-design`                                                       | brainstorm 结论 | `temp/prototypes/`                                            |
-| 3   | `feature-list`                                                           | 原型标注          | `temp/requirements/*-feature-list.csv`（主）、`*-feature-list.md` |
-| 4   | `requirement-doc-writing`（PRD）；`swimlane-diagram`（第二章 draw.io 泳道，与 4 联用） | 功能点清单等        | `temp/requirements/*-prd.md`；`temp/diagrams/*-process.drawio` |
+| 1   | `requirement-brainstorming`                                              | 用户描述          | `changes/<CHANGE-ID>/brainstorm/`                                            |
+| 2   | `prototype-design`                                                       | brainstorm 结论 | `changes/<CHANGE-ID>/prototypes/`                                            |
+| 3   | `feature-list`                                                           | 原型标注          | `changes/<CHANGE-ID>/requirements/*-feature-list.csv`（主）、`*-feature-list.md` |
+| 4   | `requirement-doc-writing`（PRD）；`swimlane-diagram`（第二章 draw.io 泳道，与 4 联用） | 功能点清单等        | `changes/<CHANGE-ID>/requirements/*-prd.md`；`changes/<CHANGE-ID>/diagrams/*-process.drawio` |
 
 
 ## 执行规则

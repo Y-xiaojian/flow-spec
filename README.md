@@ -31,7 +31,7 @@
 
 **（1）只做某一环** — 只加载对应技能（例如仅 PRD 则 `requirement-doc-writing`）。
 
-**（2）端到端** — 阅读 **`workflows/default.md`** 与 **`skills/flow-spec-routing/SKILL.md`**，按路线 A/B/C/D 执行；产物默认在 **`flow-spec/temp/`**（见 `references/rules/storage.md`）。
+**（2）端到端** — 阅读 **`workflows/default.md`** 与 **`skills/flow-spec-routing/SKILL.md`**，按路线 A/B/C/D 执行；产物目录见 **`references/rules/storage.md`**（**`flowspec/specs/…`**、**`flowspec/changes/<CHANGE-ID>/…`**）。
 
 ### 3. 快捷命令（若环境支持 `commands/`）
 
@@ -79,7 +79,7 @@ npx @yuzijun/ly-flowspec@latest
 
 - `.cursor/commands/fsx-*.md`（斜杠命令入口）
 - `.cursor/rules/flow-spec.mdc`
-- `flow-spec-output/`（对应 SKILL 里 `temp/` 的**产出映射**）
+- `flowspec/`（**`specs/<小类>/`**、**`changes/CHG-local/<小类>/`**、**`logs/`**、**`.active-change`**；见 **storage.md**）
 - 若存在 `package.json`：自动 `npm install -D @yuzijun/ly-flowspec@<版本>`
 
 技能正文从 **`node_modules/@yuzijun/ly-flowspec/skills/...`** 读取（与 OpenSpec 式「只装依赖 + 项目内命令」一致）。
@@ -114,7 +114,7 @@ npm i -g @yuzijun/ly-flowspec@latest
 
 | 命令 | 作用 |
 |------|------|
-| `flow-spec init` | **默认轻量**：只写 `fsx-*` 规则 + `flow-spec-output/` + 开发依赖；**不拷贝**整包到 `flow-spec/` |
+| `flow-spec init` | **默认轻量**：`fsx-*`、规则、**`flowspec/`** 目录骨架 + 开发依赖；**不拷贝**整包到 `flow-spec/` |
 | `flow-spec init --full` | 将完整技能包拷入 `flow-spec/`（与旧版行为相同） |
 | `flow-spec update` | 若存在嵌入的 `flow-spec/` 则同步目录；否则刷新轻量命令与 `node_modules` 依赖 |
 | `flow-spec doctor` | 检查 fsx、规则、技能可读性（嵌入或 `node_modules`） |
@@ -146,7 +146,7 @@ npm i -g @yuzijun/ly-flowspec@latest
 1. **轻量模式**不会在仓库根创建 **`flow-spec/`** 目录；但若执行了 `npm install -D`，**`node_modules/@yuzijun/ly-flowspec/`** 里会有完整包内容——这是依赖安装，不是往仓库里拷了一套 skills（勿提交 `node_modules`）。
 2. **只有**加了 **`--full`**（或用了旧版 CLI）才会在项目里出现 **`flow-spec/skills/`** 那种嵌入拷贝。
 3. 请先确认 CLI 版本（任选其一）：
-   - 已全局安装：`flow-spec --version` 或 `flow-spec version` → 当前仓库为 **0.3.1**，线上应为 **≥ 0.3.1**
+   - 已全局安装：`flow-spec --version` 或 `flow-spec version` → 当前仓库为 **0.4.0**，线上应为 **≥ 0.4.0**
    - **若终端提示找不到 `flow-spec`**（未装全局或未进 PATH）：  
      `npx --package=@yuzijun/ly-flowspec@latest flow-spec --version`  
      或先安装：`npm i -g @yuzijun/ly-flowspec@latest`
@@ -171,5 +171,5 @@ flow-spec/
 ├── workflows/        # 默认路线
 ├── commands/         # 快捷入口
 ├── scripts/          # 辅助脚本
-└── temp/             # 默认产出根目录
+└── temp/             # 嵌入模式下的 {产出根}；内含 specs/、changes/、logs/（见 storage.md）
 ```

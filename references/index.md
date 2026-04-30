@@ -17,17 +17,19 @@
 | `requirement-doc-writing`   | 需求文档（**唯一 production**，正文以该文件为准，未随包泛化改写）            |
 | `swimlane-diagram`          | PRD 第二章跨职能泳道图（draw.io），与 `requirement-doc-writing` 配合          |
 | `technical-doc-writing`     | 技术说明/设计类文档（纯文档；边界不得超出已确认需求）                          |
-| `quotation-doc-writing`      | 报价单与商务类文档（扩展；产出默认 `temp/commercial/`）                         |
+| `quotation-doc-writing`      | 报价单与商务类文档（扩展；产出默认 `changes/<CHANGE-ID>/commercial/`）                         |
 
 ## 规则
 
 - `rules/trigger-rules.md` — 触发词与路由补充  
 - `rules/constraints.md` — 硬约束与校验  
-- `rules/storage.md` — 目录与命名
+- `rules/storage.md` — **唯一**目录规范（`specs/<小类>`、`changes/<CHANGE-ID>/<小类>`、`.active-change`）  
+- `rules/change-and-versioning.md` — 变更 ID 命名与归档（补充 `storage.md`）
 
 ## 模板
 
-`references/templates/` — 需求、任务等；具体引用以各技能正文为准。
+`references/templates/` — 需求、任务等；具体引用以各技能正文为准。  
+- `templates/change-readme-stub.md` — 变更夹 `README.md` 占位（配合 `rules/change-and-versioning.md`）
 
 ## 其它参考
 

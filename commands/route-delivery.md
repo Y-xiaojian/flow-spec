@@ -1,5 +1,5 @@
 ---
-description: 全链路交付编排：触发词、路线 A～D、产出目录 flow-spec/temp
+description: 全链路交付编排：触发词、路线 A～D；产出目录见 references/rules/storage.md
 disable-model-invocation: true
 ---
 

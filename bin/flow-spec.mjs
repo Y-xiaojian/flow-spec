@@ -6,7 +6,7 @@
  * 完整拷贝：flow-spec init --full
  */
 import { spawnSync } from "node:child_process";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
@@ -20,7 +20,6 @@ import {
   readPackVersion,
   readPackageName,
   writeFsxCursorCommands,
-  writePackVersionStamp,
   writeProjectRootRule,
 } from "./lib/scaffold-core.mjs";
 
@@ -38,7 +37,7 @@ flow-spec — Flow-Spec 文档技能包 CLI
   flow-spec doctor
 
 命令:
-  init    默认仅生成项目根 Cursor 指令（fsx-*）与规则，并把产出目录设为 flow-spec-output/；
+  init    默认仅生成项目根 Cursor 指令（fsx-*）与规则，并预建 flowspec/（specs/*、changes/CHG-local/*、logs、.active-change）；
           技能从 node_modules 中的本包读取（请 npm install -D）。
           加 --full 时才会拷贝完整 flow-spec/ 目录到仓库内（旧行为）。
   update  按当前模式刷新命令与规则；embedded 模式会同步拷贝技能包目录。
@@ -135,7 +134,6 @@ function cmdInit(argv) {
       process.exit(1);
     }
     copyPackagedPack(packageRoot, flowSpecRoot, opts.force);
-    writePackVersionStamp(flowSpecRoot, ver);
     const fsSeg = flowSpecPrefixFromRoots(cwd, flowSpecRoot);
     writeFsxCursorCommands(cwd, fsSeg, "embedded", pkgName);
     writeProjectRootRule(cwd, fsSeg, "embedded", pkgName);
@@ -145,7 +143,6 @@ function cmdInit(argv) {
     maybeSuggestGitignore(cwd, ignoreLine);
     console.log(`Flow-Spec init（--full）完成: ${flowSpecRoot}`);
     console.log(`已写入项目根: ${join(cwd, ".cursor/commands/fsx-*.md")}`);
-    console.log(`包版本戳: ${ver}`);
     return;
   }
 
@@ -153,7 +150,6 @@ function cmdInit(argv) {
   ensureOutputTree(cwd);
   writeFsxCursorCommands(cwd, "", "npm", pkgName);
   writeProjectRootRule(cwd, "", "npm", pkgName);
-  writePackVersionStamp(cwd, ver);
   maybeSuggestGitignore(cwd, `${OUTPUT_ROOT_DIR}/`);
 
   if (!opts.noInstall && existsSync(join(cwd, "package.json"))) {
@@ -168,8 +164,7 @@ function cmdInit(argv) {
   }
 
   console.log("Flow-Spec init（轻量）完成：已写入 .cursor/commands 与 .cursor/rules。");
-  console.log(`产出目录: ${join(cwd, OUTPUT_ROOT_DIR)}/`);
-  console.log(`版本戳: ${join(cwd, ".flow-spec-pack-version")}`);
+  console.log(`产出根目录: ${join(cwd, OUTPUT_ROOT_DIR)}/（见 references/rules/storage.md）`);
 }
 
 function cmdUpdate(argv) {
@@ -187,7 +182,6 @@ function cmdUpdate(argv) {
 
   if (embedded && hasFlowSpecMarker(embedded)) {
     copyPackagedPack(packageRoot, embedded, true);
-    writePackVersionStamp(embedded, ver);
     const fsSeg = flowSpecPrefixFromRoots(cwd, embedded);
     writeFsxCursorCommands(cwd, fsSeg, "embedded", pkgName);
     writeProjectRootRule(cwd, fsSeg, "embedded", pkgName);
@@ -200,7 +194,6 @@ function cmdUpdate(argv) {
   ensureOutputTree(cwd);
   writeFsxCursorCommands(cwd, "", "npm", pkgName);
   writeProjectRootRule(cwd, "", "npm", pkgName);
-  writePackVersionStamp(cwd, ver);
 
   if (!opts.noInstall && existsSync(join(cwd, "package.json"))) {
     console.log(`正在更新依赖: ${pkgName}@${ver} …`);
@@ -208,7 +201,7 @@ function cmdUpdate(argv) {
   }
 
   console.log(`Flow-Spec update（轻量）完成 → ${ver}`);
-  console.log("已刷新 .cursor/commands、.cursor/rules 与 flow-spec-output/ 骨架");
+  console.log("已刷新 .cursor/commands、.cursor/rules 与 flowspec/ 目录骨架（若存在）");
 }
 
 function cmdDoctor() {
@@ -219,15 +212,9 @@ function cmdDoctor() {
   const embedded = resolveEmbeddedPackRoot(cwd);
   const npmOk = hasNpmPackMarker(cwd, pkgName);
 
-  const stampPathEmbedded = embedded ? join(embedded, ".flow-spec-pack-version") : null;
-  const stampPathRoot = join(cwd, ".flow-spec-pack-version");
-  let stamp = "(无)";
-  if (stampPathEmbedded && existsSync(stampPathEmbedded)) stamp = readFileSync(stampPathEmbedded, "utf8").trim();
-  else if (existsSync(stampPathRoot)) stamp = readFileSync(stampPathRoot, "utf8").trim();
-
   const outputOk = embedded
-    ? existsSync(join(embedded, "temp"))
-    : existsSync(join(cwd, OUTPUT_ROOT_DIR));
+    ? existsSync(join(embedded, "temp", "specs"))
+    : existsSync(join(cwd, OUTPUT_ROOT_DIR, "specs"));
 
   const checks = [
     ["fsx-write-prd", existsSync(join(cwd, ".cursor/commands/fsx-write-prd.md"))],
@@ -238,14 +225,13 @@ function cmdDoctor() {
       Boolean(embedded && hasFlowSpecMarker(embedded)) || npmOk,
     ],
     [
-      embedded ? "产出目录（嵌入 temp/）" : "产出目录（flow-spec-output/）",
+      embedded ? "产出目录（嵌入 temp/）" : "产出根目录（flowspec/）",
       outputOk,
     ],
   ];
 
   console.log("flow-spec doctor");
   console.log(`  CLI 包版本: ${verPack}`);
-  console.log(`  版本戳: ${stamp}`);
   console.log(`  嵌入目录: ${embedded || "(无)"}`);
   console.log(`  node_modules 技能包: ${npmOk ? "✓ " + pkgName : "✗"}`);
   for (const [label, ok] of checks) {

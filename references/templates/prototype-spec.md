@@ -79,7 +79,7 @@
 ## 6. 文件树（最小）
 
 ```text
-temp/prototypes/<需求名>/
+changes/<CHANGE-ID>/prototypes/<需求名>/
   index.html
   annotations.md
 ```

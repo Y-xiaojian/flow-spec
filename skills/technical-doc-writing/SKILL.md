@@ -25,7 +25,7 @@ validation_status: experimental
 3. **按模板撰写** — 背景、上下文、架构、接口、数据、错误与边界；**不**在文档中私自扩大需求未涵盖的功能（应回写需求或记入风险）。  
 4. **流程图** — 主路径与关键分支。  
 5. **时序图** — 核心链路至少一幅，标外部依赖与失败路径（如需要）。  
-6. **保存** — 默认保存到 `flow-spec/temp/technical/`（见 `references/rules/storage.md`）；若业务仓库另有约定路径，在文首说明并与索引一致；变更记入附录或修订记录。
+6. **保存** — 默认保存到 `flow-spec/temp/changes/<CHANGE-ID>/technical/`（见 `references/rules/storage.md`）；若业务仓库另有约定路径，在文首说明并与索引一致；变更记入附录或修订记录。
 
 ## 注意
 

@@ -21,13 +21,13 @@ validation_status: experimental
 
 | 输入   | 说明                                            |
 | ---- | --------------------------------------------- |
-| 流程来源 | `temp/brainstorm/<需求名>.md` 中的主流程/角色，或已定稿的流程说明 |
+| 流程来源 | `changes/<CHANGE-ID>/brainstorm/<需求名>.md` 中的主流程/角色，或已定稿的流程说明 |
 | 泳道角色 | 用户确认的角色/系统列表（如：采购员、审批人、供应商、系统）                |
 
 
 | 输出    | 路径                                                         |
 | ----- | ---------------------------------------------------------- |
-| 泳道图文件 | `temp/diagrams/<需求名>-process.drawio`（文件名与 PRD contract 一致；相对 `flow-spec/` 根） |
+| 泳道图文件 | `changes/<CHANGE-ID>/diagrams/<需求名>-process.drawio`（文件名与 PRD contract 一致；相对 **`{产出根}`**） |
 
 
 ⛔ **CHECKPOINT（建议）**：输出或大幅修改泳道前，列出拟采用的**泳道列顺序**与**主分支**，等用户确认后再写入 XML。
@@ -96,7 +96,7 @@ validation_status: experimental
 - 连线：`edgeStyle=orthogonalEdgeStyle`，主流程黑实线、驳回红虚线、分支灰虚线
 - 角色泳道按颜色区分，系统操作用浅蓝突出，拒绝路径用红色
 
-**参考**：历史项目中的泳道 `.drawio` 可放在 `temp/diagrams/` 或业务仓库约定路径，保持与当前 PRD 引用路径一致即可。
+**参考**：历史项目中的泳道 `.drawio` 可放在 `changes/<CHANGE-ID>/diagrams/` 或业务仓库约定路径，保持与当前 PRD 引用路径一致即可。
 
 ## 交付前自检（泳道 + 通用叠加）
 

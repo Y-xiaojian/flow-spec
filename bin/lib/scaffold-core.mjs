@@ -8,6 +8,7 @@ export const COPY_DIRS = ["skills", "references", "workflows", "commands", "scri
 export const COPY_FILES = ["README.md", "CLAUDE.md"];
 export const DOT_CURSOR = ".cursor";
 
+/** specs/ 与 changes/<ID>/ 下共用的小类文件夹（与 references/rules/storage.md 一致） */
 export const TEMP_SUBDIRS = [
   "brainstorm",
   "requirements",
@@ -20,8 +21,26 @@ export const TEMP_SUBDIRS = [
   "logs",
 ];
 
-/** 项目根下产出根目录（npm 链式安装时，不把文件写入 node_modules） */
-export const OUTPUT_ROOT_DIR = "flow-spec-output";
+export const DEFAULT_CHANGE_ID = "CHG-local";
+
+/** 项目根下产出根目录（npm）；init 会预建 specs/*、changes/CHG-local/*、logs、.active-change */
+export const OUTPUT_ROOT_DIR = "flowspec";
+
+function ensureFlowspecLayout(outputRoot) {
+  mkdirSync(outputRoot, { recursive: true });
+  const ac = join(outputRoot, ".active-change");
+  if (!existsSync(ac)) writeFileSync(ac, `${DEFAULT_CHANGE_ID}\n`, "utf8");
+  const specsRoot = join(outputRoot, "specs");
+  for (const sub of TEMP_SUBDIRS) {
+    mkdirSync(join(specsRoot, sub), { recursive: true });
+  }
+  const chgRoot = join(outputRoot, "changes", DEFAULT_CHANGE_ID);
+  for (const sub of TEMP_SUBDIRS) {
+    mkdirSync(join(chgRoot, sub), { recursive: true });
+  }
+  mkdirSync(join(outputRoot, "changes", "archive"), { recursive: true });
+  mkdirSync(join(outputRoot, "logs"), { recursive: true });
+}
 
 export function hasFlowSpecMarker(dir) {
   return existsSync(join(dir, "skills", "using-flow-spec", "SKILL.md"));
@@ -33,29 +52,14 @@ export function hasNpmPackMarker(projectRoot, packageName) {
   return existsSync(skill);
 }
 
+/** 嵌入模式：在 `<嵌入根>/temp/` 下创建与 storage.md 一致的 specs / changes / logs */
 export function ensureTempTree(targetRoot) {
-  const tempRoot = join(targetRoot, "temp");
-  mkdirSync(tempRoot, { recursive: true });
-  for (const sub of TEMP_SUBDIRS) {
-    const p = join(tempRoot, sub);
-    mkdirSync(p, { recursive: true });
-    const keep = join(p, ".gitkeep");
-    if (!existsSync(keep)) writeFileSync(keep, "", "utf8");
-  }
+  ensureFlowspecLayout(join(targetRoot, "temp"));
 }
 
-/**
- * 在项目根创建 flow-spec-output/（npm 轻量模式下的产出目录）
- */
+/** npm 轻量：在项目根 flowspec/ 下创建同上 */
 export function ensureOutputTree(projectRoot) {
-  const root = join(projectRoot, OUTPUT_ROOT_DIR);
-  mkdirSync(root, { recursive: true });
-  for (const sub of TEMP_SUBDIRS) {
-    const p = join(root, sub);
-    mkdirSync(p, { recursive: true });
-    const keep = join(p, ".gitkeep");
-    if (!existsSync(keep)) writeFileSync(keep, "", "utf8");
-  }
+  ensureFlowspecLayout(join(projectRoot, OUTPUT_ROOT_DIR));
 }
 
 /**
@@ -112,11 +116,6 @@ export function npmSkillsPrefix(packageName) {
   return `${p.replace(/\\/g, "/")}/`;
 }
 
-export function writePackVersionStamp(baseDir, version) {
-  const p = join(baseDir, ".flow-spec-pack-version");
-  writeFileSync(p, `${version}\n`, "utf8");
-}
-
 export function readPackVersion(packageRoot) {
   try {
     const j = JSON.parse(readFileSync(join(packageRoot, "package.json"), "utf8"));
@@ -159,8 +158,8 @@ export function writeFsxCursorCommands(projectRoot, fsSeg, mode, packageName) {
   const refPx = px;
   const tempMappingNote =
     mode === "npm"
-      ? `\n\n**路径映射：** SKILL 正文若出现 \`temp/\` 产出路径，一律写到项目根 **\`${OUTPUT_ROOT_DIR}/\`** 下对应子目录（勿写入 \`node_modules\`）。\n`
-      : "";
+      ? `\n\n**路径映射（storage.md）：** SKILL 中的 \`temp/<类别>/\` → **\`${OUTPUT_ROOT_DIR}/changes/<CHANGE-ID>/<类别>/\`**；**CHANGE-ID** 读 **\`${OUTPUT_ROOT_DIR}/.active-change\`**（默认 **${DEFAULT_CHANGE_ID}**）。定稿入 **\`${OUTPUT_ROOT_DIR}/specs/<类别>/\`**（勿写入 \`node_modules\`）。\n`
+      : `\n\n**路径映射（storage.md）：** SKILL 中的 \`temp/<类别>/\` → **\`${pxEmbedded}temp/changes/<CHANGE-ID>/<类别>/\`**；**CHANGE-ID** 读 **\`${pxEmbedded}temp/.active-change\`**（默认 **${DEFAULT_CHANGE_ID}**）。定稿入 **\`${pxEmbedded}temp/specs/<类别>/\`**。\n`;
 
   const defs = [
     [
@@ -186,7 +185,7 @@ export function writeFsxCursorCommands(projectRoot, fsSeg, mode, packageName) {
     [
       "fsx-write-swimlane.md",
       "fsx-write-swimlane — 泳道流程图（draw.io）",
-      `请按以下步骤执行：\n\n1. 阅读 ${skillPath("using-flow-spec")}\n2. 调用 \`flow-spec:swimlane-diagram\` 技能，并严格按加载后的全文执行。\n3. 读 \`${refPx}references/rules/storage.md\`；若处于 npm 链式模式，draw.io 产出写到 **\`${OUTPUT_ROOT_DIR}/diagrams/\`**。${tempMappingNote}`,
+      `请按以下步骤执行：\n\n1. 阅读 ${skillPath("using-flow-spec")}\n2. 调用 \`flow-spec:swimlane-diagram\` 技能，并严格按加载后的全文执行。\n3. 读 \`${refPx}references/rules/storage.md\`；draw.io 进行中稿写到 **\`${mode === "npm" ? OUTPUT_ROOT_DIR : `${pxEmbedded}temp`}/changes/<CHANGE-ID>/diagrams/\`**（CHANGE-ID 见 **.active-change**）。${tempMappingNote}`,
     ],
     [
       "fsx-route-delivery.md",
@@ -196,17 +195,17 @@ export function writeFsxCursorCommands(projectRoot, fsSeg, mode, packageName) {
     [
       "fsx-revise-doc.md",
       "fsx-revise-doc — 增量修订与一致性检查",
-      `请按以下步骤执行：\n\n1. 阅读 ${skillPath("using-flow-spec")} 与 \`${refPx}references/rules/constraints.md\`\n2. 调用 \`flow-spec:flow-spec-routing\`，按用户意图选择路线 **B（变更）** 或 **C（单文档）**。\n3. 按需加载 \`flow-spec:requirement-doc-writing\`、\`flow-spec:technical-doc-writing\` 或 \`flow-spec:swimlane-diagram\` 做增量修订。\n4. 校验追溯号、交叉引用；产出仍遵循上述 **\`${OUTPUT_ROOT_DIR}/\`** 映射（npm 模式）。${tempMappingNote}`,
+      `请按以下步骤执行：\n\n1. 阅读 ${skillPath("using-flow-spec")} 与 \`${refPx}references/rules/constraints.md\`\n2. 调用 \`flow-spec:flow-spec-routing\`，按用户意图选择路线 **B（变更）** 或 **C（单文档）**。\n3. 按需加载 \`flow-spec:requirement-doc-writing\`、\`flow-spec:technical-doc-writing\` 或 \`flow-spec:swimlane-diagram\` 做增量修订。\n4. 校验追溯号、交叉引用；产出路径见 **\`${refPx}references/rules/storage.md\`**（**changes/<CHANGE-ID>/…** 与 **specs/…**）。${tempMappingNote}`,
     ],
     [
       "fsx-archive-doc.md",
       "fsx-archive-doc — 归档记录与会话日志",
-      `请按以下步骤执行：\n\n1. 阅读 \`${refPx}references/rules/storage.md\` 中的会话日志格式。\n2. 将本次记录追加到 **\`${mode === "npm" ? `${OUTPUT_ROOT_DIR}/logs/` : `${outPx}logs/`}session-YYYYMMDD.md\`**（日期为当天）。\n3. 若项目约定归档目录，可将定稿副本同步到该处并在日志中记录路径。${tempMappingNote}`,
+      `请按以下步骤执行：\n\n1. 阅读 \`${refPx}references/rules/storage.md\` 中的会话日志格式。\n2. 将本次记录追加到 **\`{产出根}/logs/session-YYYYMMDD.md\`**（npm：**\`${OUTPUT_ROOT_DIR}/logs/\`**；嵌入：**\`${outPx}logs/\`**）。\n3. 若项目约定归档目录，可将定稿副本同步到该处并在日志中记录路径。${tempMappingNote}`,
     ],
     [
       "fsx-write-quote.md",
       "fsx-write-quote — 报价单与商务类文档（扩展）",
-      `请按以下步骤执行：\n\n1. 阅读 ${skillPath("using-flow-spec")}\n2. 调用 \`flow-spec:quotation-doc-writing\` 技能；商务产出写到 **\`${mode === "npm" ? `${OUTPUT_ROOT_DIR}/commercial/` : `${pxEmbedded}temp/commercial/`}\`**（见技能正文）。${tempMappingNote}`,
+      `请按以下步骤执行：\n\n1. 阅读 ${skillPath("using-flow-spec")}\n2. 调用 \`flow-spec:quotation-doc-writing\` 技能；进行中稿写到 **\`${mode === "npm" ? OUTPUT_ROOT_DIR : `${pxEmbedded}temp`}/changes/<CHANGE-ID>/commercial/\`**（见技能正文与 **.active-change**）。${tempMappingNote}`,
     ],
   ];
 
@@ -231,7 +230,7 @@ export function writeProjectRootRule(projectRoot, fsSeg, mode, packageName) {
 ## npm 轻量模式（无仓库内 flow-spec/ 目录）
 
 - **阅读技能与模板**：路径均以 **\`${px}\`** 为准（来自依赖包）。
-- **写出产物**：SKILL 中的 \`temp/\` 一律映射到项目根 **\`${OUTPUT_ROOT_DIR}/\`**（勿写入 node_modules）。
+- **写出产物**：按 **\`${px}references/rules/storage.md\`** — **\`temp/<类别>/\` → \`${OUTPUT_ROOT_DIR}/changes/<CHANGE-ID>/<类别>/\`**（**CHANGE-ID** 见 **\`${OUTPUT_ROOT_DIR}/.active-change\`**，默认 **${DEFAULT_CHANGE_ID}**）；定稿入 **\`${OUTPUT_ROOT_DIR}/specs/<类别>/\`**（勿写入 node_modules）。
 - **依赖**：请确保已安装 \`${packageName}\`（如 \`npm install -D ${packageName}\`）。
 `
       : "";
@@ -260,8 +259,8 @@ ${npmBlock}
 
 ${
   mode === "npm"
-    ? `默认写入项目根 **\`${OUTPUT_ROOT_DIR}/\`**（与 SKILL 中 \`temp/\` 对应）；规则原文见 **\`${px}references/rules/storage.md\`**。`
-    : `默认 **\`${pxEmbedded}temp/**\`，见 **\`${pxEmbedded}references/rules/storage.md\`**。`
+    ? `目录结构见 **\`${px}references/rules/storage.md\`**（**\`specs/<小类>/\`** + **\`changes/<CHANGE-ID>/<小类>/\`**）。归档流程见 **\`${px}references/rules/change-and-versioning.md\`**。`
+    : `默认 **\`${pxEmbedded}temp/**\` 下同上（**specs/**、**changes/**），见 **\`${pxEmbedded}references/rules/storage.md\`**。`
 }
 
 ## 执行习惯
@@ -280,6 +279,7 @@ export function maybeSuggestGitignore(projectRoot, tempIgnoreLine) {
   }
   const body = readFileSync(gitignorePath, "utf8");
   if (body.includes(tempIgnoreLine.trim())) return;
+  if (body.includes("flowspec/")) return;
   if (body.includes("flow-spec-output")) return;
   if (body.includes("flow-spec/temp")) return;
   console.log(`提示: 若需忽略文档草稿，可在 ${gitignorePath} 追加一行: ${tempIgnoreLine}`);

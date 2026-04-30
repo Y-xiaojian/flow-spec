@@ -15,4 +15,4 @@
 
 输出路径：
 
-- `temp/technical/`
+- `changes/<CHANGE-ID>/technical/`

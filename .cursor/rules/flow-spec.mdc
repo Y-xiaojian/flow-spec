@@ -20,7 +20,7 @@ alwaysApply: true
 
 ## 产出目录
 
-默认 **`temp/**`，见 **`references/rules/storage.md`**。
+见 **`references/rules/storage.md`**：**`specs/<小类>/`**（基线）与 **`changes/<CHANGE-ID>/<小类>/`**（进行中）；**CHANGE-ID** 见 **`temp/.active-change`**（本仓库嵌入模式）或业务项目 **`flowspec/.active-change`**。归档流程见 **`references/rules/change-and-versioning.md`**。
 
 ## 执行习惯
 

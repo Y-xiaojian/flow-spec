@@ -22,7 +22,7 @@ validation_status: experimental
 
 加载本技能前，以下产物必须已存在：
 
-- `temp/brainstorm/` 下有本次需求的头脑风暴结论文件（`.md`）
+- `changes/<CHANGE-ID>/brainstorm/` 下有本次需求的头脑风暴结论文件（`.md`）
 - 结论中包含：**核心场景**、**用户角色**、**主要操作路径**
 
 若前置缺失，先执行 `flow-spec:requirement-brainstorming`。
@@ -32,7 +32,7 @@ validation_status: experimental
 
 | 输入          | 来源                                                            |
 | ----------- | ------------------------------------------------------------- |
-| 头脑风暴结论      | `temp/brainstorm/<需求名>.md`                                    |
+| 头脑风暴结论      | `changes/<CHANGE-ID>/brainstorm/<需求名>.md`                                    |
 | 原型通用规范      | `references/templates/prototype-guidelines.md`                |
 | 原型模板        | `references/templates/prototype-spec.md`                      |
 | 前端样式规范（可替换） | 默认 `references/templates/frontend-style-guide.md` ⭐ **实现层必读** |
@@ -41,8 +41,8 @@ validation_status: experimental
 
 | 输出         | 路径                                     |
 | ---------- | -------------------------------------- |
-| 静态 HTML 原型 | `temp/prototypes/<需求名>/index.html`     |
-| 原型标注说明     | `temp/prototypes/<需求名>/annotations.md` |
+| 静态 HTML 原型 | `changes/<CHANGE-ID>/prototypes/<需求名>/index.html`     |
+| 原型标注说明     | `changes/<CHANGE-ID>/prototypes/<需求名>/annotations.md` |
 
 
 ## 执行步骤
@@ -82,7 +82,7 @@ validation_status: experimental
 
 ### Step 3 — 生成静态原型
 
-按确认的页面清单生成 `temp/prototypes/<需求名>/index.html`，**视觉与交互严格遵循当前项目的《前端样式规范》**；结构、清单与标注格式遵循 `prototype-spec.md` 与 `prototype-guidelines.md`。
+按确认的页面清单生成 `changes/<CHANGE-ID>/prototypes/<需求名>/index.html`，**视觉与交互严格遵循当前项目的《前端样式规范》**；结构、清单与标注格式遵循 `prototype-spec.md` 与 `prototype-guidelines.md`。
 
 - 页面切换、弹窗等 API 名称以样式规范为准（本仓库默认 `showPage` / `showModal` / `closeModal`）  
 - 颜色与布局不得超出样式规范允许范围
@@ -92,7 +92,7 @@ validation_status: experimental
 ### Step 4 — 人工样式审查
 
 ```
-原型已生成：temp/prototypes/<需求名>/index.html
+原型已生成：changes/<CHANGE-ID>/prototypes/<需求名>/index.html
 请在浏览器打开检查，确认后输入「原型确认」继续。
 ```
 

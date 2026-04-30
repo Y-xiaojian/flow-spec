@@ -6,4 +6,4 @@ disable-model-invocation: true
 请按以下步骤执行：
 
 1. 阅读 `skills/using-flow-spec/SKILL.md`
-2. 调用 `flow-spec:quotation-doc-writing` 技能；商务产出写到 **`temp/commercial/`**（见技能正文）。
+2. 调用 `flow-spec:quotation-doc-writing` 技能；进行中稿写到 **`temp/changes/<CHANGE-ID>/commercial/`**（**CHANGE-ID** 见 **`temp/.active-change`**）；npm 轻量为 **`flowspec/changes/<CHANGE-ID>/commercial/`**。

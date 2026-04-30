@@ -1,6 +1,6 @@
 ---
 name: quotation-doc-writing
-description: 生成报价单、商务方案报价说明等文档（扩展技能）；产出默认在 temp/commercial/
+description: 生成报价单、商务方案报价说明等文档（扩展技能）；产出默认在 changes/<CHANGE-ID>/commercial/
 validation_status: experimental
 ---
 
@@ -18,7 +18,7 @@ validation_status: experimental
 
 ## 输出
 
-- 默认路径：`temp/commercial/<业务ID>_quote_v<版本>_<YYYYMMDD>.md`（命名遵循 `references/rules/storage.md`）。
+- 默认路径：`changes/<CHANGE-ID>/commercial/<业务ID>_quote_v<版本>_<YYYYMMDD>.md`（命名遵循 `references/rules/storage.md`）。
 
 ## 模板
 

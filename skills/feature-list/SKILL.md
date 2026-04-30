@@ -10,8 +10,8 @@ validation_status: experimental
 
 加载本技能前，以下产物必须已存在：
 
-- `temp/prototypes/<需求名>/index.html` — 已通过人工样式确认的原型  
-- `temp/prototypes/<需求名>/annotations.md` — 原型标注说明
+- `changes/<CHANGE-ID>/prototypes/<需求名>/index.html` — 已通过人工样式确认的原型  
+- `changes/<CHANGE-ID>/prototypes/<需求名>/annotations.md` — 原型标注说明
 
 若前置缺失，先执行 `flow-spec:prototype-design`。
 
@@ -20,15 +20,15 @@ validation_status: experimental
 
 | 输入       | 来源                                     |
 | -------- | -------------------------------------- |
-| 确认后的原型标注 | `temp/prototypes/<需求名>/annotations.md` |
-| 头脑风暴结论   | `temp/brainstorm/<需求名>.md`             |
+| 确认后的原型标注 | `changes/<CHANGE-ID>/prototypes/<需求名>/annotations.md` |
+| 头脑风暴结论   | `changes/<CHANGE-ID>/brainstorm/<需求名>.md`             |
 
 
 
 | 输出           | 路径                                                                    |
 | ------------ | --------------------------------------------------------------------- |
-| **功能点清单（主）** | `temp/requirements/<需求名>-feature-list.csv`                            |
-| **清单说明（辅）**  | `temp/requirements/<需求名>-feature-list.md`（元信息、统计、与 CSV 路径；**不写重复大表**） |
+| **功能点清单（主）** | `changes/<CHANGE-ID>/requirements/<需求名>-feature-list.csv`                            |
+| **清单说明（辅）**  | `changes/<CHANGE-ID>/requirements/<需求名>-feature-list.md`（元信息、统计、与 CSV 路径；**不写重复大表**） |
 
 
 ## CSV 格式（主交付物）
@@ -73,9 +73,9 @@ validation_status: experimental
 
 - 创建日期：YYYY-MM-DD
 - 状态：草稿 / 已确认
-- **完整清单（CSV）**：`temp/requirements/<需求名>-feature-list.csv`
-- 关联原型：`temp/prototypes/<需求名>/index.html`
-- 关联头脑风暴：`temp/brainstorm/<需求名>.md`
+- **完整清单（CSV）**：`changes/<CHANGE-ID>/requirements/<需求名>-feature-list.csv`
+- 关联原型：`changes/<CHANGE-ID>/prototypes/<需求名>/index.html`
+- 关联头脑风暴：`changes/<CHANGE-ID>/brainstorm/<需求名>.md`
 
 ## 统计
 
@@ -112,8 +112,8 @@ validation_status: experimental
 
 ```text
 功能点清单已生成：
-- temp/requirements/<需求名>-feature-list.csv（主）
-- temp/requirements/<需求名>-feature-list.md（说明）
+- changes/<CHANGE-ID>/requirements/<需求名>-feature-list.csv（主）
+- changes/<CHANGE-ID>/requirements/<需求名>-feature-list.md（说明）
 
 共 <N> 行功能点，P0: <n>，P1: <n>，P2: <n>
 

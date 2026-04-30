@@ -69,11 +69,11 @@
 
 | 产物 | 约定路径模式 |
 |------|----------------|
-| 头脑风暴结论 | `temp/brainstorm/<需求名>.md` |
-| 静态原型 | `temp/prototypes/<需求名>/index.html` |
-| 标注说明 | `temp/prototypes/<需求名>/annotations.md` |
+| 头脑风暴结论 | `changes/<CHANGE-ID>/brainstorm/<需求名>.md` |
+| 静态原型 | `changes/<CHANGE-ID>/prototypes/<需求名>/index.html` |
+| 标注说明 | `changes/<CHANGE-ID>/prototypes/<需求名>/annotations.md` |
 
-其他仓库可改 `temp/` 前缀，但须在项目 README 或技能 contract 中写死一处，避免混乱。
+路径相对 **`{产出根}`**；**CHANGE-ID** 见 **`.active-change`**（见 **`references/rules/storage.md`**）。
 
 ---
 

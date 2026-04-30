@@ -2,8 +2,8 @@
 
 本 flow-spec 包**不提供**代码索引或自动代码分析技能；逆向工作依赖人工或业务仓库内其它工具提供的材料。
 
-1. 头脑风暴（输出 `temp/brainstorm/`）
-2. 任务计划（输出 `temp/tasks/`）
+1. 头脑风暴（输出 `changes/<CHANGE-ID>/brainstorm/`）
+2. 任务计划（输出 `changes/<CHANGE-ID>/tasks/`）
 3. 现状整理（入口、模块、接口或表结构等——以用户提供的材料为准）
 4. 业务行为归纳（流程、规则、边界）
 5. 技术说明补齐（`technical-doc-writing`）

@@ -10,17 +10,17 @@
 
 ## 何时走完整链路
 
-用户明确要从「想法」做到「可归档需求/流程文档包」时，按 **路线 A** 顺序加载技能；产物默认落在 `flow-spec/temp/`（或会话约定的根目录）。
+用户明确要从「想法」做到「可归档需求/流程文档包」时，按 **路线 A** 顺序加载技能；产物路径见 **`references/rules/storage.md`**（**`changes/<CHANGE-ID>/<小类>/`**；CHANGE-ID 见 **`.active-change`**）。
 
 ## 路线 A（新增文档包）— 建议顺序
 
 | 顺序 | 阶段 | 技能或模板 |
 |------|------|------------|
-| 1 | 头脑风暴与方案 | `requirement-brainstorming` → `temp/brainstorm/` |
-| 2 | 原型设计 | `prototype-design` → `temp/prototypes/`（⛔ 人工确认原型样式） |
-| 3 | 功能点清单 | `feature-list` → `temp/requirements/*-feature-list.csv`（⛔ 人工确认功能点） |
-| 4 | 需求规格（PRD） | `requirement-doc-writing` → `temp/requirements/*-prd.md`；第二章泳道图按需 `swimlane-diagram` → `temp/diagrams/*-process.drawio` |
-| 5 | 技术说明（可选） | 需要单独技术说明文档时：`technical-doc-writing` → `temp/technical/` |
+| 1 | 头脑风暴与方案 | `requirement-brainstorming` → `changes/<CHANGE-ID>/brainstorm/` |
+| 2 | 原型设计 | `prototype-design` → `changes/<CHANGE-ID>/prototypes/`（⛔ 人工确认原型样式） |
+| 3 | 功能点清单 | `feature-list` → `changes/<CHANGE-ID>/requirements/*-feature-list.csv`（⛔ 人工确认功能点） |
+| 4 | 需求规格（PRD） | `requirement-doc-writing` → `changes/<CHANGE-ID>/requirements/*-prd.md`；泳道图按需 `swimlane-diagram` → `changes/<CHANGE-ID>/diagrams/*-process.drawio` |
+| 5 | 技术说明（可选） | 需要单独技术说明文档时：`technical-doc-writing` → `changes/<CHANGE-ID>/technical/` |
 
 ## 路线 B（变更）
 
@@ -40,4 +40,4 @@
 
 ## 扩展位
 
-将来若增加报价单等商务文档：在 `skills/` 增加对应技能、在 `references/templates/` 增加模板，并将产出目录约定写入 `references/rules/storage.md`（如 `temp/commercial/`）。
+将来若增加报价单等商务文档：在 `skills/` 增加对应技能、在 `references/templates/` 增加模板，并将产出目录约定写入 `references/rules/storage.md`（如 `changes/<CHANGE-ID>/commercial/`）。

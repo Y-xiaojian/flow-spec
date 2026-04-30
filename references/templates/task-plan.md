@@ -9,8 +9,8 @@
 
 ## 任务清单
 
-- [ ] 产出头脑风暴文档（`temp/brainstorm/`）
-- [ ] 产出任务计划文档（`temp/tasks/`）
+- [ ] 产出头脑风暴文档（`changes/<CHANGE-ID>/brainstorm/`）
+- [ ] 产出任务计划文档（`changes/<CHANGE-ID>/tasks/`）
 - [ ] 完成当前路线主任务 1
 - [ ] 完成当前路线主任务 2
 - [ ] 完成当前路线主任务 3

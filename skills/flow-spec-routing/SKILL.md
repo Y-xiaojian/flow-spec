@@ -11,7 +11,7 @@ validation_status: experimental
 1. 阅读 `references/index.md`。
 2. 将用户表述与下表对照，**加载（invoke）**对应技能。
 3. 在 `workflows/default.md` 中选择路线 **A / B / C / D**。
-4. 按 `references/rules/constraints.md` 与 `references/rules/storage.md` 做校验。
+4. 按 `references/rules/constraints.md`、`references/rules/storage.md` 与 `references/rules/change-and-versioning.md`（归档）做校验。
 5. 不通过则修正后重试。
 
 ## 路线说明
@@ -50,7 +50,7 @@ validation_status: experimental
 
 ## 产出目录
 
-默认输出根目录：`flow-spec/temp/`（可改）。子目录见 `references/rules/storage.md`。
+默认目录结构见 **`references/rules/storage.md`**（**`specs/<小类>/`**、**`changes/<CHANGE-ID>/<小类>/`**，**CHANGE-ID** 见 **`.active-change`**）。
 
 ## OpenSpec（可选）
 

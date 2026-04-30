@@ -17,7 +17,6 @@ import {
   readPackVersion,
   readPackageName,
   writeFsxCursorCommands,
-  writePackVersionStamp,
   writeProjectRootRule,
 } from "./lib/scaffold-core.mjs";
 
@@ -121,7 +120,6 @@ function main() {
     }
 
     copyPackagedPack(packageRoot, target, opts.force);
-    writePackVersionStamp(target, ver);
     const fsSeg = flowSpecPrefixFromRoots(cwd, target);
     writeFsxCursorCommands(cwd, fsSeg, "embedded", pkgName);
     writeProjectRootRule(cwd, fsSeg, "embedded", pkgName);
@@ -136,15 +134,13 @@ function main() {
 
     console.log(`Flow-Spec（--full）已初始化: ${target}`);
     console.log(`已写入项目根: ${join(cwd, ".cursor/commands/fsx-*.md")}`);
-    console.log(`版本戳: ${ver}`);
     return;
   }
 
-  /* 轻量：仅指令 + flow-spec-output + 可选 npm install */
+  /* 轻量：指令 + flowspec/ 目录骨架 + 可选 npm install */
   ensureOutputTree(cwd);
   writeFsxCursorCommands(cwd, "", "npm", pkgName);
   writeProjectRootRule(cwd, "", "npm", pkgName);
-  writePackVersionStamp(cwd, ver);
   maybeSuggestGitignore(cwd, `${OUTPUT_ROOT_DIR}/`);
 
   if (!opts.noInstall && existsSync(join(cwd, "package.json"))) {

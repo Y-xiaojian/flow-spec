@@ -12,16 +12,16 @@ validation_status: production
 
 | 输入     | 来源                                           | 是否必须             |
 | ------ | -------------------------------------------- | ---------------- |
-| 功能点清单  | `temp/requirements/<需求名>-feature-list.csv`（主）+ 同路径 `-feature-list.md`（元信息与统计） | ✅ write-doc 路线必须 |
-| 头脑风暴结论 | `temp/brainstorm/<需求名>.md`                   | ✅                |
+| 功能点清单  | `changes/<CHANGE-ID>/requirements/<需求名>-feature-list.csv`（主）+ 同路径 `-feature-list.md`（元信息与统计） | ✅ write-doc 路线必须 |
+| 头脑风暴结论 | `changes/<CHANGE-ID>/brainstorm/<需求名>.md`                   | ✅                |
 | 业务场景参考 | `references/templates/business-scenarios.md` | 建议读              |
 
 
 
 | 输出        | 路径                                       |
 | --------- | ---------------------------------------- |
-| 需求文档（PRD） | `temp/requirements/<需求名>-prd.md`         |
-| 业务流程图     | `temp/diagrams/<需求名>-process.drawio`（可选） |
+| 需求文档（PRD） | `changes/<CHANGE-ID>/requirements/<需求名>-prd.md`         |
+| 业务流程图     | `changes/<CHANGE-ID>/diagrams/<需求名>-process.drawio`（可选） |
 
 
 若无功能点清单（非 write-doc 路线），至少需要「需求要点或设计讨论结果」作为替代输入。
@@ -49,20 +49,20 @@ validation_status: production
 
 1. **文档信息** — 填写文档信息表、修订记录表
 2. **一、项目概述** — 背景描述（含痛点表）、项目目标（按模式分目标表）、目标用户表
-3. **二、需求范围** — 功能清单表（FT-xxx、功能模块、功能点、适用模式、优先级、状态）、**业务流程图（泳道）**及流程说明表；泳道 draw.io 的生成与样式遵循 `**swimlane-diagram`** 技能，产出 `temp/diagrams/<需求名>-process.drawio`，PRD 内写路径并插图（截图）
+3. **二、需求范围** — 功能清单表（FT-xxx、功能模块、功能点、适用模式、优先级、状态）、**业务流程图（泳道）**及流程说明表；泳道 draw.io 的生成与样式遵循 `**swimlane-diagram`** 技能，产出 `changes/<CHANGE-ID>/diagrams/<需求名>-process.drawio`，PRD 内写路径并插图（截图）
 4. **三、业务流程** — 使用 **Mermaid** 编写协作类流程图（**时序图 `sequenceDiagram`、分支/路径 `flowchart` 等**），辅以流程说明表；**不要求、不编写单据状态机图**
 
 ⛔ **CHECKPOINT 2：大纲确认** — 输出一章到三章的大纲摘要，等用户确认结构无误再继续
 
 1. **四、功能需求详述** — **严格采用** `requirement-spec-template.md` 中的层级：
   - `### 4.x 模块名` → `#### 业务介绍`（模块级：定位、痛点溯源、角色、边界）
-  - `#### 4.x.y 功能点名（FT-…）` → `##### 概述`（目的、用户故事、典型步骤）→ `##### 系统功能`（前/后置、BR/VR、异常、通知、权限、验收、数据接口；**关键字段与校验可在此用表列出**）→ `##### 页面`（**仅一段说明**：如何打开 `temp/prototypes/<需求名>/index.html`、导航到哪个界面、建议截取哪些区域，并请**用户自行截图粘贴到 PRD 本节下方**；可附 `![附图占位](由用户粘贴)` 或空占位，**不再要求**在 PRD 内用完整字段表替代原型）
+  - `#### 4.x.y 功能点名（FT-…）` → `##### 概述`（目的、用户故事、典型步骤）→ `##### 系统功能`（前/后置、BR/VR、异常、通知、权限、验收、数据接口；**关键字段与校验可在此用表列出**）→ `##### 页面`（**仅一段说明**：如何打开 `changes/<CHANGE-ID>/prototypes/<需求名>/index.html`、导航到哪个界面、建议截取哪些区域，并请**用户自行截图粘贴到 PRD 本节下方**；可附 `![附图占位](由用户粘贴)` 或空占位，**不再要求**在 PRD 内用完整字段表替代原型）
   - 禁止省略 **系统功能** 或 **业务介绍**；禁止仅「概述 + 一段页面说明」而 **系统功能** 无 BR/验收/异常。
 2. **五、XXX 适配**（可选）— 下游系统或业务适配说明
 3. **六、非功能需求** — 性能要求表、数据要求表
 4. **七、风险与依赖** — 风险项表、外部依赖表
 5. **八、附录** — 名词解释表、相关文档表
-6. **保存（artifact）** — 保存到 `temp/requirements/<需求名>-prd.md`
+6. **保存（artifact）** — 保存到 `changes/<CHANGE-ID>/requirements/<需求名>-prd.md`
 
 ⛔ **CHECKPOINT 3：最终确认** — 输出文档摘要（功能点数、章节列表），等用户确认归档
 
@@ -74,7 +74,7 @@ validation_status: production
 
 ## 第二章泳道图（委托 `swimlane-diagram`）
 
-PRD **2.2 业务流程图**（跨职能泳道、draw.io XML）的**全部绘制规约**见 `**skills/swimlane-diagram/SKILL.md`**。编写第二章时请先加载 `**flow-spec:swimlane-diagram`**（或打开该 SKILL），再生成 `temp/diagrams/<需求名>-process.drawio`；本技能只要求在 PRD 中写明路径、脚注及**流程说明表**，并插入从 draw.io 导出的**截图**。
+PRD **2.2 业务流程图**（跨职能泳道、draw.io XML）的**全部绘制规约**见 `**skills/swimlane-diagram/SKILL.md`**。编写第二章时请先加载 `**flow-spec:swimlane-diagram`**（或打开该 SKILL），再生成 `changes/<CHANGE-ID>/diagrams/<需求名>-process.drawio`；本技能只要求在 PRD 中写明路径、脚注及**流程说明表**，并插入从 draw.io 导出的**截图**。
 
 ## 流程图（Mermaid，第三章节）
 
