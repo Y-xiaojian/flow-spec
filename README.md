@@ -67,37 +67,98 @@
 
 ### 用 npm CLI 初始化到任意业务项目（推荐）
 
-本仓库根目录已配置 **`create-flow-spec`** 包（与 OpenSpec 类似：`npm create` 会执行同名工具）。发布后在**业务仓库根目录**执行：
+本仓库根目录已配置 **`@yuzijun/ly-flowspec`** 包。发布后在**业务仓库根目录**执行（推荐）：
 
 ```bash
-npm create flow-spec@latest
+npx @yuzijun/ly-flowspec@latest
 ```
 
-等价：
+> **说明：** `npm create @scope/foo` 会解析为 `@scope/create-foo` 这类「create 初始化包」，与本包名不同；若未单独发布 `create-ly-flowspec`，请用 **`npx @yuzijun/ly-flowspec`** 或全局安装后的 **`flow-spec` / `ly-flowspec`**。
+
+**默认（推荐轻量）**：**不会**在仓库里再拷一份 `flow-spec/` 大目录，只会在**项目根**生成：
+
+- `.cursor/commands/fsx-*.md`（斜杠命令入口）
+- `.cursor/rules/flow-spec.mdc`
+- `flow-spec-output/`（对应 SKILL 里 `temp/` 的**产出映射**）
+- 若存在 `package.json`：自动 `npm install -D @yuzijun/ly-flowspec@<版本>`
+
+技能正文从 **`node_modules/@yuzijun/ly-flowspec/skills/...`** 读取（与 OpenSpec 式「只装依赖 + 项目内命令」一致）。
+
+**仅当**需要把整包放进仓库时（旧行为 / 离线改技能）：
 
 ```bash
-npx create-flow-spec@latest
+npx @yuzijun/ly-flowspec@latest --full
+# 或
+flow-spec init --full
 ```
-
-默认会在当前目录下生成 **`flow-spec/`** 子目录（内含 `skills/`、`references/`、`workflows/`、`commands/`、`scripts/`、`.cursor/rules/`、`temp/` 骨架等）。
-
-常用选项：
 
 | 选项 | 含义 |
 |------|------|
-| `--dir <路径>` | 指定输出目录（相对当前目录），默认 `flow-spec` |
-| `--here` | 不套子目录，直接写入当前目录（适合已在 `docs/` 等目录下执行） |
-| `--force` | 已存在 Flow-Spec 标记时仍覆盖拷贝 |
+| `--full` | 将完整 `skills/`、`references/` 等拷入 `./flow-spec`（或 `--dir` / `--here`） |
+| `--no-install` | 轻量模式下不自动执行 `npm install -D` |
+| `--dir <路径>` | 仅配合 `--full`：子目录名，默认 `flow-spec` |
+| `--here` | 仅配合 `--full`：直接写入当前目录 |
+| `--force` | 覆盖 |
 
-未发布前可在本仓库根本地调试：`node bin/create-flow-spec.mjs`、`node bin/create-flow-spec.mjs --help`。亦可 `npm link` 后在其目录运行 `create-flow-spec`。
+未发布前可在本仓库根本地调试：`node bin/create-flow-spec.mjs`、`node bin/flow-spec.mjs`。亦可 `npm link` 后使用全局命令 `flow-spec` / `create-flow-spec` / `ly-flowspec`（`ly-flowspec` 与 `flow-spec` 为同一入口）。
+
+### 全局命令 `flow-spec`（OpenSpec 式：init + update + 项目内斜杠命令）
+
+安装本包后同时获得 **`flow-spec`**、**`create-flow-spec`**、**`ly-flowspec`**（`ly-flowspec` 为 `flow-spec` 的别名）：
+
+```bash
+npm i -g @yuzijun/ly-flowspec@latest
+```
+
+在**业务仓库根目录**：
+
+| 命令 | 作用 |
+|------|------|
+| `flow-spec init` | **默认轻量**：只写 `fsx-*` 规则 + `flow-spec-output/` + 开发依赖；**不拷贝**整包到 `flow-spec/` |
+| `flow-spec init --full` | 将完整技能包拷入 `flow-spec/`（与旧版行为相同） |
+| `flow-spec update` | 若存在嵌入的 `flow-spec/` 则同步目录；否则刷新轻量命令与 `node_modules` 依赖 |
+| `flow-spec doctor` | 检查 fsx、规则、技能可读性（嵌入或 `node_modules`） |
+
+与 `create-flow-spec` / `npx @yuzijun/ly-flowspec` 行为一致，但 **推荐使用 `flow-spec init`** 作为日常入口。
+
+### Cursor 项目指令（`fsx-*`）
+
+安装后，在**业务项目根**（在 Cursor 中打开该仓库）使用命令面板，可触发：
+
+| 指令文件 | 含义 |
+|----------|------|
+| `fsx-write-brainstorm` | 头脑风暴与方案收敛 |
+| `fsx-write-prototype` | 静态原型与标注 |
+| `fsx-write-feature` | 功能点清单（CSV） |
+| `fsx-write-prd` | PRD 八章 |
+| `fsx-write-swimlane` | 泳道图 draw.io |
+| `fsx-route-delivery` | 主编排（路线 A～D） |
+| `fsx-revise-doc` | 增量修订与一致性 |
+| `fsx-archive-doc` | 会话日志与归档 |
+| `fsx-write-quote` | 报价单/商务文档（扩展技能） |
+
+> 实际斜杠名以当前 Cursor 版本对 `.cursor/commands/*.md` 的解析为准；正文会引导加载 `flow-spec:*` 技能。
+
+**本技能包仓库**若需生成上述命令，在根目录执行：`node bin/flow-spec.mjs update --force`。
+
+### 常见问题：为什么看起来「整包都在」？
+
+1. **轻量模式**不会在仓库根创建 **`flow-spec/`** 目录；但若执行了 `npm install -D`，**`node_modules/@yuzijun/ly-flowspec/`** 里会有完整包内容——这是依赖安装，不是往仓库里拷了一套 skills（勿提交 `node_modules`）。
+2. **只有**加了 **`--full`**（或用了旧版 CLI）才会在项目里出现 **`flow-spec/skills/`** 那种嵌入拷贝。
+3. 请先确认 CLI 版本（任选其一）：
+   - 已全局安装：`flow-spec --version` 或 `flow-spec version` → 当前仓库为 **0.3.1**，线上应为 **≥ 0.3.1**
+   - **若终端提示找不到 `flow-spec`**（未装全局或未进 PATH）：  
+     `npx --package=@yuzijun/ly-flowspec@latest flow-spec --version`  
+     或先安装：`npm i -g @yuzijun/ly-flowspec@latest`
+   - 仅校验包版本：`npx @yuzijun/ly-flowspec@latest --version`（跑的是 `create-flow-spec` 入口，版本号一致）
 
 ### 发布到 npm（维护者）
 
-1. 登录 npm：`npm login`
-2. 在本仓库根：`npm publish`（`package.json` 的 `files` 已限定只打包容器内技能包文件）
-3. 包名仍为 `create-flow-spec`；若需作用域包，可把 `name` 改为 `@你的组织/create-flow-spec` 再发布。
+1. 登录 npm 公网：`npm login --registry=https://registry.npmjs.org/`
+2. 在本仓库根发布：`npm publish --registry=https://registry.npmjs.org/`（`package.json` 的 `files` 已限定只打包容器内技能包文件）
+3. 包名为 `@yuzijun/ly-flowspec`；若 fork 发布，可改为 `@你的组织/ly-flowspec`。
 
-私有仓可使用 Verdaccio / GitHub Packages，用法同为 `npm create …` / `npx …`。
+私有仓可使用 Verdaccio / GitHub Packages，用法同为 `npx …` / 全局 `flow-spec`。
 
 ---
 

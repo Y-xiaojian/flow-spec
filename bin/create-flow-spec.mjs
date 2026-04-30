@@ -1,36 +1,36 @@
 #!/usr/bin/env node
 /**
- * create-flow-spec — 将 Flow-Spec 技能包拷贝到目标目录。
- * 用法见 --help。安装后亦可：npx create-flow-spec / npm create flow-spec
+ * create-flow-spec — 与 flow-spec init 对齐。
+ * 默认仅生成 Cursor 指令；加 --full 才拷贝完整 flow-spec/ 目录。
  */
-import { cpSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync } from "node:fs";
+import { spawnSync } from "node:child_process";
 import { join, dirname, relative } from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  OUTPUT_ROOT_DIR,
+  copyPackagedPack,
+  ensureOutputTree,
+  flowSpecPrefixFromRoots,
+  hasFlowSpecMarker,
+  maybeSuggestGitignore,
+  readPackVersion,
+  readPackageName,
+  writeFsxCursorCommands,
+  writePackVersionStamp,
+  writeProjectRootRule,
+} from "./lib/scaffold-core.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const packageRoot = join(__dirname, "..");
-
-const COPY_DIRS = ["skills", "references", "workflows", "commands", "scripts"];
-const COPY_FILES = ["README.md", "CLAUDE.md"];
-const DOT_CURSOR = ".cursor";
-
-const TEMP_SUBDIRS = [
-  "brainstorm",
-  "requirements",
-  "technical",
-  "prototypes",
-  "diagrams",
-  "commercial",
-  "tasks",
-  "reverse",
-  "logs",
-];
 
 function parseArgs(argv) {
   const out = {
     dir: null,
     force: false,
     here: false,
+    full: false,
+    noInstall: false,
     help: false,
   };
   for (let i = 0; i < argv.length; i++) {
@@ -38,6 +38,8 @@ function parseArgs(argv) {
     if (a === "-h" || a === "--help") out.help = true;
     else if (a === "--force") out.force = true;
     else if (a === "--here") out.here = true;
+    else if (a === "--full") out.full = true;
+    else if (a === "--no-install") out.noInstall = true;
     else if ((a === "--dir" || a === "-d") && argv[i + 1]) {
       out.dir = argv[++i];
     }
@@ -47,118 +49,116 @@ function parseArgs(argv) {
 
 function printHelp() {
   console.log(`
-create-flow-spec — 初始化 Flow-Spec 文档技能包目录结构
+create-flow-spec — 初始化 Flow-Spec（默认仅 Cursor 指令；--full 拷贝整包）
 
 用法:
-  npm create flow-spec@latest
-  npx create-flow-spec@latest [选项]
+  npx @yuzijun/ly-flowspec@latest [选项]
 
 选项:
-  --dir <路径>   输出目录（默认: 当前目录下的 flow-spec）
-  --here         直接写入当前工作目录（不套一层 flow-spec）
-  --force        目标已存在时仍覆盖拷贝
-  -h, --help     显示帮助
+  --full         将完整技能包拷入 ./flow-spec（或 --dir / --here）
+  --no-install   轻量模式下不自动 npm install -D
+  --dir <路径>   仅 --full 时：输出子目录，默认 flow-spec
+  --here         仅 --full 时：直接写入当前目录
+  --force        覆盖；或轻量时强制重写命令
+  -h, --help
+
+建议优先使用: 全局或 npx 安装后执行 flow-spec init（同默认轻量行为）。
 
 示例:
-  cd ~/my-app && npx create-flow-spec
-  cd ~/my-app && npx create-flow-spec --dir docs/flow-spec
-  cd ~/my-app/docs && npx create-flow-spec --here --force
+  cd ~/my-app && npx @yuzijun/ly-flowspec
+  cd ~/my-app && npx @yuzijun/ly-flowspec --full
 `);
 }
 
-function hasFlowSpecMarker(dir) {
-  return existsSync(join(dir, "skills", "using-flow-spec", "SKILL.md"));
-}
-
-function ensureTempTree(targetRoot) {
-  const tempRoot = join(targetRoot, "temp");
-  mkdirSync(tempRoot, { recursive: true });
-  for (const sub of TEMP_SUBDIRS) {
-    const p = join(tempRoot, sub);
-    mkdirSync(p, { recursive: true });
-    const keep = join(p, ".gitkeep");
-    if (!existsSync(keep)) writeFileSync(keep, "", "utf8");
-  }
-}
-
-function maybeSuggestGitignore(projectRoot, tempIgnoreLine) {
-  const gitignorePath = join(projectRoot, ".gitignore");
-  if (!existsSync(gitignorePath)) {
-    console.log(`提示: 可在项目根 .gitignore 增加一行忽略产出目录，例如: ${tempIgnoreLine}`);
-    return;
-  }
-  const body = readFileSync(gitignorePath, "utf8");
-  if (body.includes(tempIgnoreLine.trim()) || body.includes("flow-spec/temp")) return;
-  console.log(`提示: 若需忽略文档草稿，可在 ${gitignorePath} 追加一行: ${tempIgnoreLine}`);
+function runNpmInstallDev(projectRoot, packageName, version) {
+  const spec = `${packageName}@${version}`;
+  return (
+    spawnSync("npm", ["install", "-D", spec, "--no-fund", "--no-audit"], {
+      cwd: projectRoot,
+      stdio: "inherit",
+    }).status === 0
+  );
 }
 
 function main() {
-  const opts = parseArgs(process.argv.slice(2));
+  const argv = process.argv.slice(2);
+  if (argv[0] === "-v" || argv[0] === "--version") {
+    console.log(readPackVersion(packageRoot));
+    process.exit(0);
+  }
+
+  const opts = parseArgs(argv);
   if (opts.help) {
     printHelp();
     process.exit(0);
   }
 
   const cwd = process.cwd();
-  let target;
+  const pkgName = readPackageName(packageRoot);
+  const ver = readPackVersion(packageRoot);
 
-  if (opts.here) {
-    target = cwd;
-  } else if (opts.dir) {
-    target = join(cwd, opts.dir);
+  console.log(`\n[create-flow-spec] CLI 版本 ${ver}`);
+  if (opts.full) {
+    console.log("[create-flow-spec] 模式: --full（将拷贝 skills/ 等到仓库内指定目录）\n");
   } else {
-    target = join(cwd, "flow-spec");
-  }
-
-  if (existsSync(target) && hasFlowSpecMarker(target) && !opts.force) {
-    console.error(
-      `已存在 Flow-Spec 标记（${join(target, "skills/using-flow-spec/SKILL.md")}）。` +
-        `如需覆盖请使用 --force。`
+    console.log("[create-flow-spec] 模式: 轻量（默认）— 不创建仓库根下 flow-spec/ 文件夹");
+    console.log(
+      "                安装后出现 node_modules/@yuzijun/ly-flowspec/ 属正常（npm 依赖）。\n"
     );
-    process.exit(1);
   }
 
-  mkdirSync(target, { recursive: true });
+  if (opts.full) {
+    let target;
+    if (opts.here) target = cwd;
+    else if (opts.dir) target = join(cwd, opts.dir);
+    else target = join(cwd, "flow-spec");
 
-  for (const name of COPY_DIRS) {
-    const src = join(packageRoot, name);
-    const dest = join(target, name);
-    if (!existsSync(src)) {
-      console.warn(`跳过（源不存在）: ${src}`);
-      continue;
+    if (existsSync(target) && hasFlowSpecMarker(target) && !opts.force) {
+      console.error(
+        `已存在 Flow-Spec（${join(target, "skills/using-flow-spec/SKILL.md")}）。加 --force 覆盖。`
+      );
+      process.exit(1);
     }
-    cpSync(src, dest, { recursive: true, force: opts.force });
-  }
 
-  const cursorSrc = join(packageRoot, DOT_CURSOR);
-  if (existsSync(cursorSrc)) {
-    cpSync(cursorSrc, join(target, DOT_CURSOR), { recursive: true, force: opts.force });
-  } else {
-    console.warn("跳过: 包内未找到 .cursor/");
-  }
+    copyPackagedPack(packageRoot, target, opts.force);
+    writePackVersionStamp(target, ver);
+    const fsSeg = flowSpecPrefixFromRoots(cwd, target);
+    writeFsxCursorCommands(cwd, fsSeg, "embedded", pkgName);
+    writeProjectRootRule(cwd, fsSeg, "embedded", pkgName);
 
-  for (const f of COPY_FILES) {
-    const src = join(packageRoot, f);
-    if (existsSync(src)) {
-      cpSync(src, join(target, f), { force: opts.force });
+    let ignoreLine = "flow-spec/temp/";
+    if (opts.here) ignoreLine = "temp/";
+    else {
+      const rel = relative(cwd, target).replace(/\\/g, "/");
+      if (rel && rel !== ".") ignoreLine = `${rel}/temp/`;
     }
+    maybeSuggestGitignore(cwd, ignoreLine);
+
+    console.log(`Flow-Spec（--full）已初始化: ${target}`);
+    console.log(`已写入项目根: ${join(cwd, ".cursor/commands/fsx-*.md")}`);
+    console.log(`版本戳: ${ver}`);
+    return;
   }
 
-  ensureTempTree(target);
+  /* 轻量：仅指令 + flow-spec-output + 可选 npm install */
+  ensureOutputTree(cwd);
+  writeFsxCursorCommands(cwd, "", "npm", pkgName);
+  writeProjectRootRule(cwd, "", "npm", pkgName);
+  writePackVersionStamp(cwd, ver);
+  maybeSuggestGitignore(cwd, `${OUTPUT_ROOT_DIR}/`);
 
-  let ignoreLine = "flow-spec/temp/";
-  if (opts.here) {
-    ignoreLine = "temp/";
-  } else {
-    const rel = relative(cwd, target).replace(/\\/g, "/");
-    if (rel && rel !== ".") ignoreLine = `${rel}/temp/`;
+  if (!opts.noInstall && existsSync(join(cwd, "package.json"))) {
+    console.log(`正在安装: ${pkgName}@${ver} …`);
+    if (!runNpmInstallDev(cwd, pkgName, ver)) {
+      console.error("npm install 失败。请手动: npm install -D " + pkgName + "@latest");
+      process.exit(1);
+    }
+  } else if (!opts.noInstall) {
+    console.log("提示: 无 package.json 时请稍后执行 npm install -D " + pkgName + "@latest");
   }
-  maybeSuggestGitignore(cwd, ignoreLine);
 
-  console.log(`Flow-Spec 已初始化: ${target}`);
-  console.log(
-    "下一步: 在 Cursor 中打开项目，确认 .cursor/rules 已生效；会话入口见 skills/using-flow-spec/SKILL.md"
-  );
+  console.log("已生成 Cursor 指令与规则（轻量模式，未拷贝 flow-spec/ 目录）。");
+  console.log(`产出根: ${join(cwd, OUTPUT_ROOT_DIR)}/`);
 }
 
 main();

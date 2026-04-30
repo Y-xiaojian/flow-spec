@@ -37,6 +37,7 @@ validation_status: experimental
 | 写 PRD、需求文档、功能规格             | `requirement-doc-writing`                       |
 | PRD 泳道图、跨职能流程、draw.io 业务流程图 | `swimlane-diagram`                              |
 | 技术方案、接口说明、架构说明（文档）        | `technical-doc-writing`                         |
+| 报价单、商务说明、方案报价                 | `quotation-doc-writing`                          |
 
 
 **优先级：** 明确意图 > 当前路线阶段 > 默认路线 A。

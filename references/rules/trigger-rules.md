@@ -13,6 +13,7 @@
 | PRD、需求文档、功能规格 | `requirement-doc-writing` |
 | PRD 泳道图、跨职能流程、draw.io 业务流程图 | `swimlane-diagram` |
 | 技术设计、接口设计、架构说明（文档形态） | `technical-doc-writing` |
+| 报价单、商务方案、合同外报价说明 | `quotation-doc-writing` |
 
 ## 冲突优先级
 

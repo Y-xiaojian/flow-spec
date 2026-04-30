@@ -1,28 +1,28 @@
 ---
-description: Flow-Spec 文档技能包——会话入口与路径约定（先读章程再动笔）
+description: Flow-Spec 文档技能包——会话入口（项目根规则）
 alwaysApply: true
 ---
 
 # Flow-Spec
 
-本仓库**仅文档交付**：头脑风暴、原型、功能清单、PRD、泳道图、可选技术说明。**不包含**编码或 TDD 技能。
+本仓库使用 Flow-Spec 文档交付技能包。**不包含**编码或 TDD。
 
 ## 会话入口（必读顺序）
 
-1. **`skills/using-flow-spec/SKILL.md`** — 如何加载与组合技能。
-2. **`references/index.md`** — 技能与规则索引。
-3. **`workflows/default.md`** — 路线 A～D；完整文档链见 **`workflows/write-doc.md`**。
-4. 用户意图不清时读 **`skills/flow-spec-routing/SKILL.md`** — 触发词 → 技能映射。
+1. **`skills/using-flow-spec/SKILL.md`**
+2. **`references/index.md`**
+3. **`workflows/default.md`**；完整链见 **`workflows/write-doc.md`**
+4. 意图不清时读 **`skills/flow-spec-routing/SKILL.md`**
 
-## 路径约定（本仓库根目录即为 flow-spec）
+## 快捷指令
 
-- 技能：`skills/<技能名>/SKILL.md`
-- 产出默认根：`temp/`（目录与命名见 **`references/rules/storage.md`**）
-- 快捷入口说明：`commands/*.md`（在支持项目命令的环境中可映射为斜杠命令，以当前 Cursor 版本为准）
+使用命令面板中的 **`fsx-*`**（见 `.cursor/commands/`）。
 
-若本包被放进**业务仓库子目录** `flow-spec/`，上述路径前加前缀 `flow-spec/`。
+## 产出目录
+
+默认 **`temp/**`，见 **`references/rules/storage.md`**。
 
 ## 执行习惯
 
-- 涉及具体产出时，**先加载对应技能的 SKILL.md**（例如 PRD → `requirement-doc-writing`），不要凭记忆套用模板。
+- 先加载对应技能的 `SKILL.md`。
 - 推断须标注 `inferred`；遵守 **`references/rules/constraints.md`**。

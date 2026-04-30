@@ -17,6 +17,7 @@
 | `requirement-doc-writing`   | 需求文档（**唯一 production**，正文以该文件为准，未随包泛化改写）            |
 | `swimlane-diagram`          | PRD 第二章跨职能泳道图（draw.io），与 `requirement-doc-writing` 配合          |
 | `technical-doc-writing`     | 技术说明/设计类文档（纯文档；边界不得超出已确认需求）                          |
+| `quotation-doc-writing`      | 报价单与商务类文档（扩展；产出默认 `temp/commercial/`）                         |
 
 ## 规则
 

@@ -1,10 +1,12 @@
 {
-  "name": "create-flow-spec",
-  "version": "0.1.0",
+  "name": "@yuzijun/ly-flowspec",
+  "version": "0.3.1",
   "description": "Scaffold the Flow-Spec document delivery skill pack into a project (skills, references, workflows, Cursor rules).",
   "type": "module",
   "bin": {
-    "create-flow-spec": "./bin/create-flow-spec.mjs"
+    "create-flow-spec": "./bin/create-flow-spec.mjs",
+    "flow-spec": "./bin/flow-spec.mjs",
+    "ly-flowspec": "./bin/flow-spec.mjs"
   },
   "files": [
     "bin",
@@ -29,6 +31,10 @@
     "scaffold"
   ],
   "license": "UNLICENSED",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": ""
