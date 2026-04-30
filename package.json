@@ -1,6 +1,6 @@
 {
   "name": "@yuzijun/ly-flowspec",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Scaffold the Flow-Spec document delivery skill pack into a project (skills, references, workflows, Cursor rules).",
   "type": "module",
   "bin": {
