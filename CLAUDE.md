@@ -22,12 +22,12 @@ Flow-Spec 是一套**与业务领域解耦的文档交付工作流**技能包：
 | `prototype-design` | 静态 HTML 原型 | write-doc 链路 |
 | `feature-list` | CSV 功能清单 | write-doc 链路 |
 | `requirement-doc-writing` | PRD 需求文档 | 已实战验证 |
-| `swimlane-diagram` | PRD 第二章泳道（draw.io） | 与 PRD 联用 |
+| `diagram-skill` | 泳道/流程/架构/时序图示（draw.io） | YAML→CLI |
 | `technical-doc-writing` | 技术说明/设计类文档（纯文档） | |
 
 ### 工作流路线 (`workflows/default.md`)
 
-- **路线 A（新增文档包）**：头脑风暴 → 任务清单 → 原型 → 功能清单 → PRD（按需泳道图）→ 可选技术说明文档
+- **路线 A（新增文档包）**：头脑风暴 → 任务清单 → 原型 → 功能清单 → PRD（按需图示）→ 可选技术说明文档
 - **路线 B（变更）**：影响分析 + 增量修订需求/流程图/技术说明
 - **路线 C（单文档）**：修订单类文档或单图并做一致性检查
 - **路线 D（缺陷）**：按项目既有流程处理（本包无内置技能）

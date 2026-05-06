@@ -15,7 +15,7 @@
 | `prototype-design`          | 静态 HTML 原型（write-doc 链路）                               |
 | `feature-list`              | CSV/MD 功能点清单（PRD 前置）                                    |
 | `requirement-doc-writing`   | 需求文档（**唯一 production**，正文以该文件为准，未随包泛化改写）            |
-| `swimlane-diagram`          | PRD 第二章跨职能泳道图（draw.io），与 `requirement-doc-writing` 配合          |
+| `diagram-skill`             | 泳道/流程/架构/时序等图示（YAML→CLI→draw.io），见 `skills/diagram-skill/SKILL.md` |
 | `technical-doc-writing`     | 技术说明/设计类文档（纯文档；边界不得超出已确认需求）                          |
 | `quotation-doc-writing`      | 报价单与商务类文档（扩展；产出默认 `changes/<CHANGE-ID>/commercial/`）                         |
 
@@ -34,4 +34,5 @@
 ## 其它参考
 
 - `references/testing-anti-patterns.md` — 测试反模式摘录（可选阅读，非本包独立技能）
-- `references/external/draw-io/SKILL.md` — 通用 draw.io XML/导出/版式摘录；与 `swimlane-diagram` 叠加使用
+- `references/external/draw-io/SKILL.md` — 通用 draw.io XML/导出/版式摘录；与 `diagram-skill` 叠加使用
+- `references/rules/diagram-production.md` — 图示交付自检与常见问题（`diagram-skill` + CLI）

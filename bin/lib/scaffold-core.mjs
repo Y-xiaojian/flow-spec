@@ -183,9 +183,9 @@ export function writeFsxCursorCommands(projectRoot, fsSeg, mode, packageName) {
       `请按以下步骤执行：\n\n1. 阅读 ${skillPath("using-flow-spec")}\n2. 调用 \`flow-spec:requirement-doc-writing\` 技能，并严格按加载后的全文执行。${tempMappingNote}`,
     ],
     [
-      "fsx-write-swimlane.md",
-      "fsx-write-swimlane — 泳道流程图（draw.io）",
-      `请按以下步骤执行：\n\n1. 阅读 ${skillPath("using-flow-spec")}\n2. 调用 \`flow-spec:swimlane-diagram\` 技能，并严格按加载后的全文执行。\n3. 读 \`${refPx}references/rules/storage.md\`；draw.io 进行中稿写到 **\`${mode === "npm" ? OUTPUT_ROOT_DIR : `${pxEmbedded}temp`}/changes/<CHANGE-ID>/diagrams/\`**（CHANGE-ID 见 **.active-change**）。${tempMappingNote}`,
+      "fsx-write-diagram.md",
+      "fsx-write-diagram — 图示 draw.io（泳道/流程/架构等）",
+      `请按以下步骤执行：\n\n1. 阅读 ${skillPath("using-flow-spec")}\n2. 调用 \`flow-spec:diagram-skill\` 技能，并严格按加载后的全文执行。\n3. 读 \`${refPx}references/rules/storage.md\`；draw.io 进行中稿写到 **\`${mode === "npm" ? OUTPUT_ROOT_DIR : `${pxEmbedded}temp`}/changes/<CHANGE-ID>/diagrams/\`**（CHANGE-ID 见 **.active-change**）。${tempMappingNote}`,
     ],
     [
       "fsx-route-delivery.md",
@@ -195,7 +195,7 @@ export function writeFsxCursorCommands(projectRoot, fsSeg, mode, packageName) {
     [
       "fsx-revise-doc.md",
       "fsx-revise-doc — 增量修订与一致性检查",
-      `请按以下步骤执行：\n\n1. 阅读 ${skillPath("using-flow-spec")} 与 \`${refPx}references/rules/constraints.md\`\n2. 调用 \`flow-spec:flow-spec-routing\`，按用户意图选择路线 **B（变更）** 或 **C（单文档）**。\n3. 按需加载 \`flow-spec:requirement-doc-writing\`、\`flow-spec:technical-doc-writing\` 或 \`flow-spec:swimlane-diagram\` 做增量修订。\n4. 校验追溯号、交叉引用；产出路径见 **\`${refPx}references/rules/storage.md\`**（**changes/<CHANGE-ID>/…** 与 **specs/…**）。${tempMappingNote}`,
+      `请按以下步骤执行：\n\n1. 阅读 ${skillPath("using-flow-spec")} 与 \`${refPx}references/rules/constraints.md\`\n2. 调用 \`flow-spec:flow-spec-routing\`，按用户意图选择路线 **B（变更）** 或 **C（单文档）**。\n3. 按需加载 \`flow-spec:requirement-doc-writing\`、\`flow-spec:technical-doc-writing\` 或 \`flow-spec:diagram-skill\` 做增量修订。\n4. 校验追溯号、交叉引用；产出路径见 **\`${refPx}references/rules/storage.md\`**（**changes/<CHANGE-ID>/…** 与 **specs/…**）。${tempMappingNote}`,
     ],
     [
       "fsx-archive-doc.md",

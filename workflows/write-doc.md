@@ -25,9 +25,9 @@ CLI 入口：`write-doc`
   产物：changes/<CHANGE-ID>/requirements/<需求名>-feature-list.csv（主）与 -feature-list.md（说明）
   ⛔ CHECKPOINT C：用户确认功能点无遗漏，输入「功能点确认」
   
-[Stage 4] requirement-doc-writing（+ 按需 swimlane-diagram）
+[Stage 4] requirement-doc-writing（+ 按需 diagram-skill）
   目标：生成完整 PRD，归档
-  产物：changes/<CHANGE-ID>/requirements/<需求名>-prd.md；第二章泳道图为 changes/<CHANGE-ID>/diagrams/<需求名>-process.drawio（按 `swimlane-diagram` 技能）
+  产物：changes/<CHANGE-ID>/requirements/<需求名>-prd.md；第二章业务流程图为 changes/<CHANGE-ID>/diagrams/<需求名>-process.drawio（按 `diagram-skill`）
   ⛔ CHECKPOINT D：用户最终确认，文档归档完成
   
 [完成]
@@ -40,7 +40,7 @@ CLI 入口：`write-doc`
 | 1   | `requirement-brainstorming`                                              | 用户描述          | `changes/<CHANGE-ID>/brainstorm/`                                            |
 | 2   | `prototype-design`                                                       | brainstorm 结论 | `changes/<CHANGE-ID>/prototypes/`                                            |
 | 3   | `feature-list`                                                           | 原型标注          | `changes/<CHANGE-ID>/requirements/*-feature-list.csv`（主）、`*-feature-list.md` |
-| 4   | `requirement-doc-writing`（PRD）；`swimlane-diagram`（第二章 draw.io 泳道，与 4 联用） | 功能点清单等        | `changes/<CHANGE-ID>/requirements/*-prd.md`；`changes/<CHANGE-ID>/diagrams/*-process.drawio` |
+| 4   | `requirement-doc-writing`（PRD）；`diagram-skill`（第二章 draw.io 图示，与 4 联用） | 功能点清单等        | `changes/<CHANGE-ID>/requirements/*-prd.md`；`changes/<CHANGE-ID>/diagrams/*-process.drawio` |
 
 
 ## 执行规则
@@ -58,5 +58,5 @@ CLI 入口：`write-doc`
 | 原型         | `flow-spec:prototype-design`          |
 | 功能点        | `flow-spec:feature-list`              |
 | PRD        | `flow-spec:requirement-doc-writing`   |
-| PRD 第二章泳道图 | `flow-spec:swimlane-diagram`          |
+| PRD 第二章业务流程图 | `flow-spec:diagram-skill`          |
 | 技术说明文档     | `flow-spec:technical-doc-writing`      |

@@ -19,12 +19,12 @@
 | 1 | 头脑风暴与方案 | `requirement-brainstorming` → `changes/<CHANGE-ID>/brainstorm/` |
 | 2 | 原型设计 | `prototype-design` → `changes/<CHANGE-ID>/prototypes/`（⛔ 人工确认原型样式） |
 | 3 | 功能点清单 | `feature-list` → `changes/<CHANGE-ID>/requirements/*-feature-list.csv`（⛔ 人工确认功能点） |
-| 4 | 需求规格（PRD） | `requirement-doc-writing` → `changes/<CHANGE-ID>/requirements/*-prd.md`；泳道图按需 `swimlane-diagram` → `changes/<CHANGE-ID>/diagrams/*-process.drawio` |
+| 4 | 需求规格（PRD） | `requirement-doc-writing` → `changes/<CHANGE-ID>/requirements/*-prd.md`；图示按需 `diagram-skill` → `changes/<CHANGE-ID>/diagrams/*.drawio` |
 | 5 | 技术说明（可选） | 需要单独技术说明文档时：`technical-doc-writing` → `changes/<CHANGE-ID>/technical/` |
 
 ## 路线 B（变更）
 
-任务清单或简短澄清后做**影响分析**；用 `requirement-doc-writing` / `technical-doc-writing` / `swimlane-diagram` 对**已有文档与图表**做增量修订；一致性检查（追溯号、交叉引用、`storage.md` 路径）。
+任务清单或简短澄清后做**影响分析**；用 `requirement-doc-writing` / `technical-doc-writing` / `diagram-skill` 对**已有文档与图表**做增量修订；一致性检查（追溯号、交叉引用、`storage.md` 路径）。
 
 ## 路线 C（单文档）
 

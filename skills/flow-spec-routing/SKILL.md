@@ -35,7 +35,7 @@ validation_status: experimental
 | 原型、静态页面演示                   | `prototype-design`                            |
 | 功能点、CSV 清单                   | `feature-list`                                |
 | 写 PRD、需求文档、功能规格             | `requirement-doc-writing`                       |
-| PRD 泳道图、跨职能流程、draw.io 业务流程图 | `swimlane-diagram`                              |
+| 泳道图、流程图、架构图、draw.io 图示       | `diagram-skill`                                |
 | 技术方案、接口说明、架构说明（文档）        | `technical-doc-writing`                         |
 | 报价单、商务说明、方案报价                 | `quotation-doc-writing`                          |
 
