@@ -75,27 +75,27 @@
 
 分步图文教程见：`**[docs/flowspec-install-and-init.md](docs/flowspec-install-and-init.md)**`。
 
-本仓库根目录已配置 `**@yuzijun/ly-flowspec**` 包。发布后在**业务仓库根目录**执行（推荐）：
+本仓库根目录已配置 `**@yalo1228/ly-flowspec**` 包。发布后在**业务仓库根目录**执行（推荐）：
 
 ```bash
-npx @yuzijun/ly-flowspec@latest
+npx @yalo1228/ly-flowspec@latest
 ```
 
-> **说明：** `npm create @scope/foo` 会解析为 `@scope/create-foo` 这类「create 初始化包」，与本包名不同；若未单独发布 `create-ly-flowspec`，请用 `**npx @yuzijun/ly-flowspec`** 或全局安装后的 `**flow-spec` / `ly-flowspec**`。
+> **说明：** `npm create @scope/foo` 会解析为 `@scope/create-foo` 这类「create 初始化包」，与本包名不同；若未单独发布 `create-ly-flowspec`，请用 `**npx @yalo1228/ly-flowspec`** 或全局安装后的 `**flow-spec` / `ly-flowspec**`。
 
 **默认（推荐轻量）**：**不会**在仓库里再拷一份 `flow-spec/` 大目录，只会在**项目根**生成：
 
 - `.cursor/commands/fsx-*.md`（斜杠命令入口）
 - `.cursor/rules/flow-spec.mdc`
 - `flowspec/`（`**specs/<小类>/`**、`**changes/CHG-local/<小类>/**`、`**logs/**`、`**.active-change**`；见 **storage.md**）
-- 若存在 `package.json`：自动 `npm install -D @yuzijun/ly-flowspec@<版本>`
+- 若存在 `package.json`：自动 `npm install -D @yalo1228/ly-flowspec@<版本>`
 
-技能正文从 `**node_modules/@yuzijun/ly-flowspec/skills/...`** 读取（与 OpenSpec 式「只装依赖 + 项目内命令」一致）。
+技能正文从 `**node_modules/@yalo1228/ly-flowspec/skills/...`** 读取（与 OpenSpec 式「只装依赖 + 项目内命令」一致）。
 
 **仅当**需要把整包放进仓库时（旧行为 / 离线改技能）：
 
 ```bash
-npx @yuzijun/ly-flowspec@latest --full
+npx @yalo1228/ly-flowspec@latest --full
 # 或
 flow-spec init --full
 ```
@@ -117,7 +117,7 @@ flow-spec init --full
 安装本包后同时获得 `**flow-spec**`、`**create-flow-spec**`、`**ly-flowspec**`（`ly-flowspec` 为 `flow-spec` 的别名）：
 
 ```bash
-npm i -g @yuzijun/ly-flowspec@latest
+npm i -g @yalo1228/ly-flowspec@latest
 ```
 
 在**业务仓库根目录**：
@@ -131,7 +131,7 @@ npm i -g @yuzijun/ly-flowspec@latest
 | `flow-spec doctor`      | 检查 fsx、规则、技能可读性（嵌入或 `node_modules`）                                     |
 
 
-与 `create-flow-spec` / `npx @yuzijun/ly-flowspec` 行为一致，但 **推荐使用 `flow-spec init`** 作为日常入口。
+与 `create-flow-spec` / `npx @yalo1228/ly-flowspec` 行为一致，但 **推荐使用 `flow-spec init`** 作为日常入口。
 
 ### Cursor 项目指令（`fsx-*`）
 
@@ -157,20 +157,20 @@ npm i -g @yuzijun/ly-flowspec@latest
 
 ### 常见问题：为什么看起来「整包都在」？
 
-1. **轻量模式**不会在仓库根创建 `**flow-spec/`** 目录；但若执行了 `npm install -D`，`**node_modules/@yuzijun/ly-flowspec/**` 里会有完整包内容——这是依赖安装，不是往仓库里拷了一套 skills（勿提交 `node_modules`）。
+1. **轻量模式**不会在仓库根创建 `**flow-spec/`** 目录；但若执行了 `npm install -D`，`**node_modules/@yalo1228/ly-flowspec/**` 里会有完整包内容——这是依赖安装，不是往仓库里拷了一套 skills（勿提交 `node_modules`）。
 2. **只有**加了 `**--full`**（或用了旧版 CLI）才会在项目里出现 `**flow-spec/skills/**` 那种嵌入拷贝。
 3. 请先确认 CLI 版本（任选其一）：
   - 已全局安装：`flow-spec --version` 或 `flow-spec version` → 当前仓库为 **0.4.0**，线上应为 **≥ 0.4.0**
   - **若终端提示找不到 `flow-spec`**（未装全局或未进 PATH）：  
-  `npx --package=@yuzijun/ly-flowspec@latest flow-spec --version`  
-  或先安装：`npm i -g @yuzijun/ly-flowspec@latest`
-  - 仅校验包版本：`npx @yuzijun/ly-flowspec@latest --version`（跑的是 `create-flow-spec` 入口，版本号一致）
+  `npx --package=@yalo1228/ly-flowspec@latest flow-spec --version`  
+  或先安装：`npm i -g @yalo1228/ly-flowspec@latest`
+  - 仅校验包版本：`npx @yalo1228/ly-flowspec@latest --version`（跑的是 `create-flow-spec` 入口，版本号一致）
 
 ### 发布到 npm（维护者）
 
 1. 登录 npm 公网：`npm login --registry=https://registry.npmjs.org/`
 2. 在本仓库根发布：`npm publish --registry=https://registry.npmjs.org/`（`package.json` 的 `files` 已限定只打包容器内技能包文件）
-3. 包名为 `@yuzijun/ly-flowspec`；若 fork 发布，可改为 `@你的组织/ly-flowspec`。
+3. 包名为 `@yalo1228/ly-flowspec`；若 fork 发布，可改为 `@你的组织/ly-flowspec`。
 
 私有仓可使用 Verdaccio / GitHub Packages，用法同为 `npx …` / 全局 `flow-spec`。
 

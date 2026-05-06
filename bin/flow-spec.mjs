@@ -2,7 +2,7 @@
 /**
  * flow-spec — 全局 CLI：init / update / doctor
  *
- * 默认 init：仅写入项目根 .cursor/commands（fsx-*）与规则；技能从 node_modules/@yuzijun/ly-flowspec 读取。
+ * 默认 init：仅写入项目根 .cursor/commands（fsx-*）与规则；技能从 node_modules/@yalo1228/ly-flowspec 读取。
  * 完整拷贝：flow-spec init --full
  */
 import { spawnSync } from "node:child_process";
@@ -114,13 +114,13 @@ function cmdInit(argv) {
   const pkgName = readPackageName(packageRoot);
   const ver = readPackVersion(packageRoot);
 
-  console.log(`\n[flow-spec] CLI 版本 ${ver}（来自当前安装的 @yuzijun/ly-flowspec）`);
+  console.log(`\n[flow-spec] CLI 版本 ${ver}（来自当前安装的 @yalo1228/ly-flowspec）`);
   if (opts.full) {
     console.log("[flow-spec] 模式: 完整拷贝（--full）→ 将在仓库内生成含 skills/ 的目录\n");
   } else {
     console.log("[flow-spec] 模式: 轻量（默认）→ 不在仓库根创建 flow-spec/ 目录");
     console.log(
-      "           技能从 node_modules/@yuzijun/ly-flowspec/ 读取（npm 依赖，属正常，勿提交 node_modules）。\n"
+      "           技能从 node_modules/@yalo1228/ly-flowspec/ 读取（npm 依赖，属正常，勿提交 node_modules）。\n"
     );
   }
 

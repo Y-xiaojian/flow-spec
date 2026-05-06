@@ -128,9 +128,9 @@ export function readPackVersion(packageRoot) {
 export function readPackageName(packageRoot) {
   try {
     const j = JSON.parse(readFileSync(join(packageRoot, "package.json"), "utf8"));
-    return j.name || "@yuzijun/ly-flowspec";
+    return j.name || "@yalo1228/ly-flowspec";
   } catch {
-    return "@yuzijun/ly-flowspec";
+    return "@yalo1228/ly-flowspec";
   }
 }
 
@@ -145,7 +145,7 @@ disable-model-invocation: true
 
 /**
  * @param {'embedded'|'npm'} mode - embedded: 仓库内有 flow-spec 目录；npm: 技能仅从 node_modules 读取
- * @param {string} packageName - npm 包名，如 @yuzijun/ly-flowspec
+ * @param {string} packageName - npm 包名，如 @yalo1228/ly-flowspec
  */
 export function writeFsxCursorCommands(projectRoot, fsSeg, mode, packageName) {
   const pxEmbedded = pathPrefix(fsSeg);
